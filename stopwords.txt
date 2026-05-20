@@ -1,4 +1,4 @@
-ada
+﻿ada
 adalah
 adanya
 adapun
@@ -43,7 +43,6 @@ bagian
 bahkan
 bahwa
 bahwasanya
-baik
 bakal
 bakalan
 balik
@@ -63,7 +62,6 @@ begitupun
 bekas
 belakang
 belakangan
-belum
 belumlah
 benar
 benarkah
@@ -117,7 +115,6 @@ boleh
 bolehkah
 bolehlah
 buat
-bukan
 bukankah
 bukanlah
 bukannya
@@ -227,7 +224,6 @@ itulah
 jadi
 jadilah
 jadinya
-jangan
 jangankan
 janganlah
 jauh
@@ -297,7 +293,6 @@ kiranya
 kita
 kitalah
 kok
-kurang
 lagi
 lagian
 lah
@@ -474,7 +469,6 @@ sama
 sampai
 sampaikan
 sana
-sangat
 sangatlah
 satu
 saya
@@ -521,7 +515,6 @@ sejenak
 sejumlah
 sekadar
 sekadarnya
-sekali
 sekalian
 sekaligus
 sekalipun
@@ -605,14 +598,12 @@ tadi
 tadinya
 tahu
 tahun
-tak
 tambah
 tambahnya
 tampak
 tampaknya
 tandas
 tandasnya
-tanpa
 tanya
 tanyakan
 tanyanya
@@ -649,7 +640,6 @@ tetap
 tetapi
 tiap
 tiba
-tidak
 tidakkah
 tidaklah
 tiga
