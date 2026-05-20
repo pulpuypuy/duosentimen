@@ -68,12 +68,13 @@
 
         <ul class="nav-menu" style="padding: 0; flex: 0;">
             <li class="nav-item logout">
-                <a href="/dashboard/logout">
+                <a href="/dashboard/logout" onclick="return confirm('Yakin ingin logout?')" style="color: #e17055;">
                     <i class="fas fa-right-from-bracket"></i>
                     <span>Logout</span>
                 </a>
             </li>
         </ul>
+
 
         <div class="sidebar-footer">
             &copy; {{ now().year if now is defined else '2026' }} <span>By Ahmad Saifulla</span>
