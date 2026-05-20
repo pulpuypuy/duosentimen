@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+
+{% block title %}Dataset - DuoSentimen{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <h1><i class="fas fa-database me-2" style="color: #667eea;"></i>Kelola Dataset</h1>
+    <p>Upload dataset CSV ulasan Duolingo, preprocessing, dan kelola data</p>
+</div>
+
+<!-- Upload Dataset CSV -->
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-cloud-arrow-up"></i> Upload Dataset CSV
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-7">
+                <form method="POST" action="/dataset/upload" enctype="multipart/form-data">
+                    {{ form.hidden_tag() if form }}
+                    <div class="upload-area mb-3" onclick="document.getElementById('file-input').click()">
+                        <i class="fas fa-file-csv"></i>
+                        <p id="file-name-display">Klik untuk memilih file <strong>.csv</strong> atau drag & drop</p>
+                    </div>
+                    <input type="file" class="d-none" id="file-input" name="file" accept=".csv,.xlsx" 
+                           onchange="document.getElementById('file-name-display').innerHTML = '<strong>' + this.files[0].name + '</strong> dipilih'">
+                    
+                    <!-- Mode Upload -->
+                    <div class="mb-3">
+                        <label class="form-label fw-500" style="font-size: 14px;">
+                            <i class="fas fa-cog me-1" style="color: #667eea;"></i>Mode Upload:
+                        </label>
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="replace_mode" id="mode-replace" value="replace" checked>
+                                <label class="form-check-label" for="mode-replace" style="font-size: 13px;">
+                                    <i class="fas fa-arrows-rotate me-1"></i>Ganti semua data lama
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="replace_mode" id="mode-append" value="append">
+                                <label class="form-check-label" for="mode-append" style="font-size: 13px;">
+                                    <i class="fas fa-plus me-1"></i>Tambahkan ke data yang ada
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary-gradient" id="btn-upload" onclick="showLoading()">
+                        <i class="fas fa-upload me-2"></i>Upload Dataset
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-5">
+                <div class="card" style="background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05)); border: 1px dashed #667eea;">
+                    <div class="card-body" style="padding: 20px;">
+                        <h6 style="color: #667eea; font-weight: 600; margin-bottom: 12px;">
+                            <i class="fas fa-circle-info me-1"></i>Format CSV yang Didukung
+                        </h6>
+                        <p style="font-size: 12px; color: #666; margin-bottom: 8px;">File CSV harus memiliki kolom berikut:</p>
+                        <div style="background: #1a1a2e; color: #00b894; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 11px; line-height: 1.8;">
+                            Review ID, Username, Rating, Review Text, Date
+                        </div>
+                        <div class="mt-2" style="font-size: 11px; color: #888;">
+                            <p class="mb-1"><i class="fas fa-tag me-1" style="color: #00b894;"></i><strong>Auto-Labeling:</strong> Berdasarkan rating</p>
+                            <ul style="padding-left: 20px; margin-bottom: 0;">
+                                <li>Rating ⭐ 1-2 → <span class="badge-negatif" style="font-size: 10px;">Negatif</span></li>
+                                <li>Rating ⭐ 3 → <span class="badge-netral" style="font-size: 10px;">Netral</span></li>
+                                <li>Rating ⭐ 4-5 → <span class="badge-positif" style="font-size: 10px;">Positif</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-wand-magic-sparkles"></i> Pengolahan Data
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <form method="POST" action="/preprocessing" onsubmit="showLoading()">
+                    {{ form.hidden_tag() if form }}
+                    <button type="submit" class="btn btn-primary-gradient w-100 py-3" id="btn-preprocessing"
+                            onclick="return confirmAction('Jalankan preprocessing pada seluruh dataset?')">
+                        <i class="fas fa-broom d-block mb-2" style="font-size: 24px;"></i>
+                        Jalankan Preprocessing
+                        <small class="d-block mt-1" style="font-size: 11px; opacity: 0.8;">
+                            Cleaning, Tokenizing, Stemming
+                        </small>
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <form method="POST" action="/split-data" onsubmit="showLoading()">
+                    {{ form.hidden_tag() if form }}
+                    <button type="submit" class="btn btn-success-gradient w-100 py-3" id="btn-split"
+                            onclick="return confirmAction('Bagi dataset menjadi data training dan testing (80:20)?')">
+                        <i class="fas fa-scissors d-block mb-2" style="font-size: 24px;"></i>
+                        Bagi Data (80:20)
+                        <small class="d-block mt-1" style="font-size: 11px; opacity: 0.8;">
+                            Split Training & Testing
+                        </small>
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <form method="POST" action="/training" onsubmit="showLoading()">
+                    {{ form.hidden_tag() if form }}
+                    <button type="submit" class="btn btn-warning-gradient w-100 py-3" id="btn-training"
+                            onclick="return confirmAction('Jalankan proses training model Naive Bayes?')">
+                        <i class="fas fa-brain d-block mb-2" style="font-size: 24px;"></i>
+                        Jalankan Training
+                        <small class="d-block mt-1" style="font-size: 11px; opacity: 0.8;">
+                            Naive Bayes Classifier
+                        </small>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dataset Table -->
+{% if data %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fas fa-table-list"></i> Data Ulasan
+            {% if total_pages %}
+            <span class="badge bg-primary ms-2" style="background: linear-gradient(135deg, #667eea, #764ba2) !important;">
+                Halaman {{ page }} / {{ total_pages }}
+            </span>
+            {% endif %}
+        </div>
+        <button class="btn btn-print btn-sm no-print" onclick="printSection('dataset-table')">
+            <i class="fas fa-print"></i> Cetak
+        </button>
+    </div>
+    <div class="card-body" id="dataset-table">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">No</th>
+                        <th>Ulasan Asli</th>
+                        {% if preprocessed %}
+                        <th>Ulasan Bersih</th>
+                        {% endif %}
+                        <th style="width: 100px;">Label</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                    <tr>
+                        <td>{{ loop.index + ((page - 1) * 25) }}</td>
+                        <td>
+                            <div style="max-width: 400px; font-size: 13px; color: #555;">
+                                {{ item.ulasan_asli[:150] }}{% if item.ulasan_asli|length > 150 %}...{% endif %}
+                            </div>
+                        </td>
+                        {% if preprocessed %}
+                        <td>
+                            <div style="max-width: 400px; font-size: 13px; color: #667eea;">
+                                {{ item.ulasan_bersih if item.ulasan_bersih else '-' }}
+                            </div>
+                        </td>
+                        {% endif %}
+                        <td>
+                            {% if item.label == 'positif' %}
+                                <span class="badge-positif">Positif</span>
+                            {% elif item.label == 'negatif' %}
+                                <span class="badge-negatif">Negatif</span>
+                            {% else %}
+                                <span class="badge-netral">Netral</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if total_pages and total_pages > 1 %}
+        <div class="pagination-custom no-print">
+            {% if page > 1 %}
+            <a href="?page={{ page - 1 }}" class="page-link">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% else %}
+            <span class="page-link disabled">
+                <i class="fas fa-chevron-left"></i>
+            </span>
+            {% endif %}
+
+            {% for p in range(1, total_pages + 1) %}
+                {% if p == page %}
+                    <span class="page-link active">{{ p }}</span>
+                {% elif p <= 3 or p > total_pages - 3 or (p >= page - 2 and p <= page + 2) %}
+                    <a href="?page={{ p }}" class="page-link">{{ p }}</a>
+                {% elif p == 4 or p == total_pages - 3 %}
+                    <span class="page-link disabled">...</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if page < total_pages %}
+            <a href="?page={{ page + 1 }}" class="page-link">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% else %}
+            <span class="page-link disabled">
+                <i class="fas fa-chevron-right"></i>
+            </span>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% else %}
+<div class="card">
+    <div class="card-body">
+        <div class="empty-state">
+            <i class="fas fa-inbox"></i>
+            <h5>Belum Ada Dataset</h5>
+            <p>Upload file dataset CSV ulasan Duolingo untuk memulai analisis sentimen.</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

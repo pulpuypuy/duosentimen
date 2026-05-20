@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}About - DuoSentimen{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <h1><i class="fas fa-circle-info me-2" style="color: #667eea;"></i>Tentang Aplikasi</h1>
+    <p>Informasi tentang DuoSentimen dan teknologi yang digunakan</p>
+</div>
+
+<!-- Project Info -->
+<div class="card">
+    <div class="card-body text-center py-5">
+        <div class="about-icon mx-auto">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <h2 class="text-gradient mb-2" style="font-weight: 700; font-size: 32px;">DuoSentimen</h2>
+        <h5 style="color: #555; font-weight: 400; max-width: 600px; margin: 0 auto 20px; line-height: 1.7; font-size: 15px;">
+            Analisis Sentimen Ulasan Aplikasi Duolingo pada Google Play Store 
+            Menggunakan Metode Naive Bayes
+        </h5>
+        <div class="divider" style="max-width: 100px; margin: 20px auto;"></div>
+        <p style="color: #888; font-size: 14px;">
+            <i class="fas fa-user-graduate me-2" style="color: #667eea;"></i>
+            Dibuat oleh <strong style="color: #1a1a2e;">Ahmad Saifulla</strong>
+        </p>
+    </div>
+</div>
+
+<!-- Technology Stack -->
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-layer-group"></i> Teknologi yang Digunakan
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h6 style="font-weight: 600; color: #1a1a2e; margin-bottom: 12px;">
+                    <i class="fas fa-code me-2" style="color: #667eea;"></i>Backend & Framework
+                </h6>
+                <div class="d-flex flex-wrap gap-1">
+                    <span class="tech-badge"><i class="fab fa-python me-1"></i>Python</span>
+                    <span class="tech-badge"><i class="fas fa-flask me-1"></i>Flask</span>
+                    <span class="tech-badge"><i class="fas fa-database me-1"></i>MySQL</span>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h6 style="font-weight: 600; color: #1a1a2e; margin-bottom: 12px;">
+                    <i class="fas fa-brain me-2" style="color: #667eea;"></i>Machine Learning
+                </h6>
+                <div class="d-flex flex-wrap gap-1">
+                    <span class="tech-badge"><i class="fas fa-chart-simple me-1"></i>Naive Bayes</span>
+                    <span class="tech-badge"><i class="fas fa-font me-1"></i>TF-IDF</span>
+                    <span class="tech-badge"><i class="fas fa-language me-1"></i>NLTK</span>
+                    <span class="tech-badge"><i class="fas fa-wand-magic-sparkles me-1"></i>Sastrawi</span>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h6 style="font-weight: 600; color: #1a1a2e; margin-bottom: 12px;">
+                    <i class="fas fa-cloud-arrow-down me-2" style="color: #667eea;"></i>Data Collection
+                </h6>
+                <div class="d-flex flex-wrap gap-1">
+                    <span class="tech-badge"><i class="fab fa-google-play me-1"></i>Google Play Scraper</span>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h6 style="font-weight: 600; color: #1a1a2e; margin-bottom: 12px;">
+                    <i class="fas fa-chart-pie me-2" style="color: #667eea;"></i>Visualisasi
+                </h6>
+                <div class="d-flex flex-wrap gap-1">
+                    <span class="tech-badge"><i class="fas fa-chart-bar me-1"></i>Plotly</span>
+                    <span class="tech-badge"><i class="fas fa-cloud me-1"></i>WordCloud</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works -->
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-diagram-project"></i> Alur Kerja Sistem
+    </div>
+    <div class="card-body">
+        <div class="step-item">
+            <span class="step-number">1</span>
+            <div>
+                <strong style="color: #1a1a2e;">Scraping</strong>
+                <p style="font-size: 13px; color: #888; margin: 2px 0 0 0;">
+                    Mengambil data ulasan aplikasi Duolingo dari Google Play Store menggunakan library <em>google-play-scraper</em>
+                </p>
+            </div>
+        </div>
+        <div class="step-item">
+            <span class="step-number">2</span>
+            <div>
+                <strong style="color: #1a1a2e;">Preprocessing</strong>
+                <p style="font-size: 13px; color: #888; margin: 2px 0 0 0;">
+                    Membersihkan teks: case folding, tokenizing, filtering stopword, dan stemming menggunakan NLTK & Sastrawi
+                </p>
+            </div>
+        </div>
+        <div class="step-item">
+            <span class="step-number">3</span>
+            <div>
+                <strong style="color: #1a1a2e;">TF-IDF Vectorization</strong>
+                <p style="font-size: 13px; color: #888; margin: 2px 0 0 0;">
+                    Mengubah teks menjadi representasi numerik menggunakan metode Term Frequency - Inverse Document Frequency
+                </p>
+            </div>
+        </div>
+        <div class="step-item">
+            <span class="step-number">4</span>
+            <div>
+                <strong style="color: #1a1a2e;">Naive Bayes Classification</strong>
+                <p style="font-size: 13px; color: #888; margin: 2px 0 0 0;">
+                    Melatih dan menguji model klasifikasi menggunakan algoritma Naive Bayes untuk prediksi sentimen
+                </p>
+            </div>
+        </div>
+        <div class="step-item">
+            <span class="step-number">5</span>
+            <div>
+                <strong style="color: #1a1a2e;">Visualisasi & Evaluasi</strong>
+                <p style="font-size: 13px; color: #888; margin: 2px 0 0 0;">
+                    Menampilkan hasil dalam bentuk grafik, confusion matrix, word cloud, dan metrik evaluasi (accuracy, precision, recall, F1-score)
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact / Credit -->
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-address-card"></i> Kontak & Kredit
+    </div>
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <div class="d-flex align-items-center gap-3">
+                    <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; font-weight: 700; flex-shrink: 0;">
+                        A
+                    </div>
+                    <div>
+                        <h6 style="font-weight: 600; color: #1a1a2e; margin-bottom: 2px;">Ahmad Saifulla</h6>
+                        <p style="font-size: 13px; color: #888; margin: 0;">Developer & Researcher</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p style="font-size: 13px; color: #888; margin: 0;">
+                    <i class="fas fa-calendar me-1" style="color: #667eea;"></i>
+                    &copy; {{ now().year if now is defined else '2026' }} DuoSentimen
+                </p>
+                <p style="font-size: 12px; color: #aaa; margin: 4px 0 0 0;">
+                    Analisis Sentimen Ulasan Google Play Store
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

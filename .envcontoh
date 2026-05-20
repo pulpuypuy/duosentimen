@@ -1,0 +1,17 @@
+# ====================================
+# DuoSentimen - Environment Variables
+# ====================================
+# Salin file ini menjadi .env dan sesuaikan nilainya
+
+# Database MySQL
+DB_USERNAME=root
+DB_PASSWORD=
+DB_HOST=localhost
+DB_NAME=duosentimen_db
+
+# Flask Configuration
+SECRET_KEY=duosentimen-secret-key-ganti-ini-2026
+FLASK_ENV=development
+
+# App Configuration
+FLASK_DEBUG=1

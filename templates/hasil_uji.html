@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+
+{% block title %}Hasil Pengujian - DuoSentimen{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <h1><i class="fas fa-chart-column me-2" style="color: #667eea;"></i>Hasil Pengujian Model</h1>
+    <p>Evaluasi performa model Naive Bayes</p>
+</div>
+
+{% if accuracy is not defined or accuracy is none %}
+<!-- No Results State -->
+<div class="card">
+    <div class="card-body">
+        <div class="empty-state">
+            <i class="fas fa-flask-vial"></i>
+            <h5>Belum Ada Hasil Pengujian</h5>
+            <p>Silakan lakukan training terlebih dahulu pada halaman <a href="/dataset" style="color: #667eea; font-weight: 500;">Dataset</a>.</p>
+        </div>
+    </div>
+</div>
+{% else %}
+
+<!-- Metrics Row -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-3">
+        <div class="stat-card total">
+            <div class="stat-icon">
+                <i class="fas fa-bullseye"></i>
+            </div>
+            <div class="stat-value">{{ accuracy }}%</div>
+            <div class="stat-label">Accuracy</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-3">
+        <div class="stat-card positif">
+            <div class="stat-icon">
+                <i class="fas fa-crosshairs"></i>
+            </div>
+            <div class="stat-value">{{ precision }}%</div>
+            <div class="stat-label">Precision</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-3">
+        <div class="stat-card netral">
+            <div class="stat-icon">
+                <i class="fas fa-magnifying-glass-chart"></i>
+            </div>
+            <div class="stat-value">{{ recall }}%</div>
+            <div class="stat-label">Recall</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-3">
+        <div class="stat-card negatif">
+            <div class="stat-icon">
+                <i class="fas fa-scale-balanced"></i>
+            </div>
+            <div class="stat-value">{{ f1 }}%</div>
+            <div class="stat-label">F1-Score</div>
+        </div>
+    </div>
+</div>
+
+<!-- Confusion Matrix -->
+{% if confusion_matrix_chart %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fas fa-table-cells"></i> Confusion Matrix
+        </div>
+        <button class="btn btn-print btn-sm no-print" onclick="printSection('confusion-matrix-section')">
+            <i class="fas fa-print"></i> Cetak
+        </button>
+    </div>
+    <div class="card-body" id="confusion-matrix-section">
+        {{ confusion_matrix_chart|safe }}
+    </div>
+</div>
+{% endif %}
+
+<!-- Word Clouds -->
+{% if wc_positif or wc_negatif or wc_netral %}
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-cloud"></i> Word Cloud per Sentimen
+    </div>
+    <div class="card-body">
+        <div class="row" id="wordcloud-section">
+            {% if wc_positif %}
+            <div class="col-md-4 mb-3">
+                <div class="wordcloud-container">
+                    <div class="mb-2">
+                        <span class="badge-positif" style="font-size: 14px; padding: 6px 16px;">
+                            <i class="fas fa-face-smile me-1"></i> Positif
+                        </span>
+                    </div>
+                    <img src="data:image/png;base64,{{ wc_positif }}" alt="Word Cloud Positif" loading="lazy">
+                </div>
+                <div class="text-center mt-2 no-print">
+                    <button class="btn btn-print btn-sm" onclick="printSection('wordcloud-section')">
+                        <i class="fas fa-print"></i> Cetak
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+            {% if wc_negatif %}
+            <div class="col-md-4 mb-3">
+                <div class="wordcloud-container">
+                    <div class="mb-2">
+                        <span class="badge-negatif" style="font-size: 14px; padding: 6px 16px;">
+                            <i class="fas fa-face-frown me-1"></i> Negatif
+                        </span>
+                    </div>
+                    <img src="data:image/png;base64,{{ wc_negatif }}" alt="Word Cloud Negatif" loading="lazy">
+                </div>
+            </div>
+            {% endif %}
+            {% if wc_netral %}
+            <div class="col-md-4 mb-3">
+                <div class="wordcloud-container">
+                    <div class="mb-2">
+                        <span class="badge-netral" style="font-size: 14px; padding: 6px 16px;">
+                            <i class="fas fa-face-meh me-1"></i> Netral
+                        </span>
+                    </div>
+                    <img src="data:image/png;base64,{{ wc_netral }}" alt="Word Cloud Netral" loading="lazy">
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Comparison Bar Chart -->
+{% if comparison_chart %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fas fa-chart-bar"></i> Perbandingan Hasil
+        </div>
+        <button class="btn btn-print btn-sm no-print" onclick="printSection('comparison-chart-section')">
+            <i class="fas fa-print"></i> Cetak
+        </button>
+    </div>
+    <div class="card-body" id="comparison-chart-section">
+        {{ comparison_chart|safe }}
+    </div>
+</div>
+{% endif %}
+
+<!-- Detail Table -->
+{% if detail_data %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fas fa-list-check"></i> Detail Hasil Prediksi
+            <span class="badge bg-primary ms-2" style="background: linear-gradient(135deg, #667eea, #764ba2) !important;">
+                {{ detail_data|length }} data
+            </span>
+        </div>
+        <button class="btn btn-print btn-sm no-print" onclick="printSection('detail-table')">
+            <i class="fas fa-print"></i> Cetak
+        </button>
+    </div>
+    <div class="card-body" id="detail-table">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">No</th>
+                        <th>Ulasan</th>
+                        <th style="width: 110px;">Label Asli</th>
+                        <th style="width: 110px;">Label Prediksi</th>
+                        <th style="width: 100px;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in detail_data %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <div style="max-width: 400px; font-size: 13px; color: #555;">
+                                {{ item.ulasan[:100] }}{% if item.ulasan|length > 100 %}...{% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            {% if item.label_asli == 'positif' %}
+                                <span class="badge-positif">Positif</span>
+                            {% elif item.label_asli == 'negatif' %}
+                                <span class="badge-negatif">Negatif</span>
+                            {% else %}
+                                <span class="badge-netral">Netral</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.label_prediksi == 'positif' %}
+                                <span class="badge-positif">Positif</span>
+                            {% elif item.label_prediksi == 'negatif' %}
+                                <span class="badge-negatif">Negatif</span>
+                            {% else %}
+                                <span class="badge-netral">Netral</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.label_asli == item.label_prediksi %}
+                                <span class="badge-benar">
+                                    <i class="fas fa-check me-1"></i>Benar
+                                </span>
+                            {% else %}
+                                <span class="badge-salah">
+                                    <i class="fas fa-xmark me-1"></i>Salah
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endif %}
+{% endblock %}

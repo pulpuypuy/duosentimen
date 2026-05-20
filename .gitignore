@@ -1,0 +1,34 @@
+# Environment
+.env
+*.pyc
+__pycache__/
+*.pyo
+
+# Virtual Environment
+env/
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Assets & Uploads
+assets/*.xlsx
+assets/*.csv
+assets/*.png
+assets/*.jpg
+
+# Logs
+*.log
+
+# Distribution
+dist/
+build/
+*.egg-info/

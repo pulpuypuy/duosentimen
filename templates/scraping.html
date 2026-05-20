@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}Scraping - DuoSentimen{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <h1><i class="fas fa-cloud-arrow-down me-2" style="color: #667eea;"></i>Scraping Google Play Store</h1>
+    <p>Ambil ulasan aplikasi Duolingo dari Google Play Store</p>
+</div>
+
+<!-- App Info Card -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="app-preview">
+            <div class="app-icon">
+                <i class="fas fa-language"></i>
+            </div>
+            <div>
+                <div class="app-name">Duolingo: Language Lessons</div>
+                <div class="app-desc">
+                    <i class="fas fa-star" style="color: #fdcb6e;"></i>
+                    Aplikasi belajar bahasa terpopuler di dunia — Google Play Store
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scraping Configuration -->
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-gear"></i> Konfigurasi Scraping
+    </div>
+    <div class="card-body">
+        <form method="POST" action="/scraping/start" onsubmit="showLoading()">
+            {{ form.hidden_tag() if form }}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="jumlah" class="form-label">
+                        <i class="fas fa-hashtag me-1" style="color: #667eea;"></i>Jumlah Ulasan
+                    </label>
+                    <input type="number" class="form-control" id="jumlah" name="jumlah" 
+                           placeholder="Contoh: 500" min="1" max="10000" value="500" required>
+                    <small class="text-muted">Maksimal 10.000 ulasan</small>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="bahasa" class="form-label">
+                        <i class="fas fa-globe me-1" style="color: #667eea;"></i>Bahasa Ulasan
+                    </label>
+                    <select class="form-select" id="bahasa" name="bahasa">
+                        <option value="id" selected>Indonesia</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="tahun" class="form-label">
+                        <i class="fas fa-calendar me-1" style="color: #667eea;"></i>Tahun Mulai
+                    </label>
+                    <input type="number" class="form-control" id="tahun" name="tahun" 
+                           placeholder="Contoh: 2023" min="2010" max="2026" value="2023">
+                    <small class="text-muted">Filter ulasan dari tahun tertentu</small>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary-gradient" id="btn-scraping">
+                <i class="fas fa-cloud-arrow-down me-2"></i>Mulai Scraping
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Messages -->
+{% if msg %}
+<div class="alert alert-custom alert-info alert-dismissible fade show mt-3" role="alert">
+    <i class="fas fa-info-circle"></i>
+    {{ msg }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+<!-- Scraping Results -->
+{% if data %}
+<div class="card mt-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fas fa-table"></i> Hasil Scraping
+            <span class="badge bg-primary ms-2" style="background: linear-gradient(135deg, #667eea, #764ba2) !important;">
+                {{ data|length }} ulasan
+            </span>
+        </div>
+        <button class="btn btn-print btn-sm no-print" onclick="printSection('scraping-table')">
+            <i class="fas fa-print"></i> Cetak
+        </button>
+    </div>
+    <div class="card-body" id="scraping-table">
+        <div class="table-responsive">
+            <table class="table table-hover" id="table-scraping">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">No</th>
+                        <th>Nama User</th>
+                        <th style="width: 60px;">Rating</th>
+                        <th>Ulasan</th>
+                        <th>Tanggal</th>
+                        <th style="width: 100px;">Label</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <div style="font-weight: 500; font-size: 13px;">{{ item.userName }}</div>
+                        </td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-star" style="color: #fdcb6e; font-size: 12px;"></i>
+                                <span style="font-weight: 600;">{{ item.score }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="max-width: 350px; font-size: 13px; color: #555;" 
+                                 title="{{ item.content }}">
+                                {{ item.content[:100] }}{% if item.content|length > 100 %}...{% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <span style="font-size: 13px; color: #888;">{{ item.at }}</span>
+                        </td>
+                        <td>
+                            {% if item.label == 'positif' %}
+                                <span class="badge-positif">Positif</span>
+                            {% elif item.label == 'negatif' %}
+                                <span class="badge-negatif">Negatif</span>
+                            {% else %}
+                                <span class="badge-netral">Netral</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

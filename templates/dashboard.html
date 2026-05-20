@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - DuoSentimen{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <h1><i class="fas fa-house me-2" style="color: #667eea;"></i>Dashboard</h1>
+    <p>Selamat datang, <strong>{{ username }}</strong>! 👋</p>
+</div>
+
+<!-- Statistics Row -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-3">
+        <div class="stat-card total">
+            <div class="stat-icon">
+                <i class="fas fa-database"></i>
+            </div>
+            <div class="stat-value">{{ stats.total if stats else 0 }}</div>
+            <div class="stat-label">Total Data</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-3">
+        <div class="stat-card positif">
+            <div class="stat-icon">
+                <i class="fas fa-face-smile"></i>
+            </div>
+            <div class="stat-value">{{ stats.positif if stats else 0 }}</div>
+            <div class="stat-label">Positif</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-3">
+        <div class="stat-card negatif">
+            <div class="stat-icon">
+                <i class="fas fa-face-frown"></i>
+            </div>
+            <div class="stat-value">{{ stats.negatif if stats else 0 }}</div>
+            <div class="stat-label">Negatif</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-3">
+        <div class="stat-card netral">
+            <div class="stat-icon">
+                <i class="fas fa-face-meh"></i>
+            </div>
+            <div class="stat-value">{{ stats.netral if stats else 0 }}</div>
+            <div class="stat-label">Netral</div>
+        </div>
+    </div>
+</div>
+
+<!-- Manual Sentiment Analysis -->
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-comment-dots"></i> Analisis Sentimen Manual
+    </div>
+    <div class="card-body">
+        <form method="POST" action="/sentimen">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                <label for="input_text" class="form-label">Masukkan teks ulasan untuk dianalisis:</label>
+                <textarea 
+                    name="input_text" 
+                    id="input_text" 
+                    class="form-control" 
+                    rows="4" 
+                    placeholder="Contoh: Aplikasi ini sangat membantu saya belajar bahasa Inggris dengan cara yang menyenangkan..."
+                    required
+                >{% if input_text %}{{ input_text }}{% endif %}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary-gradient" id="btn-analyze">
+                <i class="fas fa-magnifying-glass-chart me-2"></i>Analisis Sentimen
+            </button>
+        </form>
+
+        <!-- Sentiment Result -->
+        {% if hasil_sentimen %}
+        <div class="divider"></div>
+        <h6 class="mb-3" style="font-weight: 600; color: #1a1a2e;">
+            <i class="fas fa-square-poll-vertical me-2" style="color: #667eea;"></i>Hasil Analisis
+        </h6>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                {% if hasil_sentimen.lower() == 'positif' %}
+                <div class="result-card positif">
+                    <div class="result-icon"><i class="fas fa-face-smile-beam"></i></div>
+                    <div class="result-label" style="color: #00b894;">Positif</div>
+                    <p style="font-size: 13px; color: #888; margin: 0;">Sentimen terdeteksi sebagai <strong>Positif</strong></p>
+                    <div class="result-text">"{{ input_text }}"</div>
+                </div>
+                {% elif hasil_sentimen.lower() == 'negatif' %}
+                <div class="result-card negatif">
+                    <div class="result-icon"><i class="fas fa-face-frown-open"></i></div>
+                    <div class="result-label" style="color: #e17055;">Negatif</div>
+                    <p style="font-size: 13px; color: #888; margin: 0;">Sentimen terdeteksi sebagai <strong>Negatif</strong></p>
+                    <div class="result-text">"{{ input_text }}"</div>
+                </div>
+                {% else %}
+                <div class="result-card netral">
+                    <div class="result-icon"><i class="fas fa-face-meh-blank"></i></div>
+                    <div class="result-label" style="color: #fdcb6e;">Netral</div>
+                    <p style="font-size: 13px; color: #888; margin: 0;">Sentimen terdeteksi sebagai <strong>Netral</strong></p>
+                    <div class="result-text">"{{ input_text }}"</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Pie Chart -->
+{% if pie_chart %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fas fa-chart-pie"></i> Distribusi Sentimen
+        </div>
+        <button class="btn btn-print btn-sm no-print" onclick="printSection('pie-chart-section')">
+            <i class="fas fa-print"></i> Cetak
+        </button>
+    </div>
+    <div class="card-body" id="pie-chart-section">
+        <div id="pie-chart">{{ pie_chart|safe }}</div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
