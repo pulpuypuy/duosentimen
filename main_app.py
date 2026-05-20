@@ -267,9 +267,9 @@ def dashboard():
     pie_chart = None
     if stats['total'] > 0:
         label_counts = {
-            'Positif': stats['positif'],
-            'Negatif': stats['negatif'],
-            'Netral': stats['netral']
+            'positif': stats['positif'],
+            'negatif': stats['negatif'],
+            'netral': stats['netral']
         }
         pie_chart = generate_pie_chart(label_counts)
     
@@ -298,9 +298,9 @@ def sentimen_manual():
     
     if stats['total'] > 0:
         label_counts = {
-            'Positif': stats['positif'],
-            'Negatif': stats['negatif'],
-            'Netral': stats['netral']
+            'positif': stats['positif'],
+            'negatif': stats['negatif'],
+            'netral': stats['netral']
         }
         pie_chart = generate_pie_chart(label_counts)
     
