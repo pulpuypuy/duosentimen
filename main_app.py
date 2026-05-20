@@ -24,6 +24,7 @@ from datetime import datetime, timedelta
 
 from form import LoginUserForm, RegisterUserForm, UploadDatasetForm, ManualSentimenForm
 from preprocesing_text import preprocess_text
+from lexicon_labeling import label_sentiment, label_sentiment_detail, calculate_sentiment_score
 from tf_idf import calculate_tfidf, get_tfidf_vector, calculate_tf
 from naive_bayes import train_naive_bayes, predict_single, evaluate_model
 from genplot import (
@@ -496,8 +497,9 @@ def upload_dataset():
                 df = df.dropna(subset=['ulasan'])
                 df['ulasan'] = df['ulasan'].astype(str)
                 
-                # Auto-label berdasarkan rating
-                df['label'] = df['rating'].apply(auto_label)
+                # Label akan ditentukan oleh lexicon saat preprocessing
+                # Sementara set label kosong
+                df['label'] = ''
                 
                 # Hapus data lama jika user memilih replace
                 conn = get_db_connection()
@@ -579,24 +581,42 @@ def run_preprocessing():
         cursor.execute("DELETE FROM dataset_preprocessed")
         
         count = 0
+        label_stats = {'positif': 0, 'negatif': 0, 'netral': 0}
         for item in data:
             ulasan_asli = item['ulasan']
             ulasan_bersih = preprocess_text(str(ulasan_asli))
             
-            if ulasan_bersih.strip():  # Hanya simpan jika hasilnya tidak kosong
+            if ulasan_bersih.strip():
+                # Labeling menggunakan lexicon InSet
+                label = label_sentiment(ulasan_bersih)
+                label_stats[label] = label_stats.get(label, 0) + 1
+                
                 cursor.execute(
                     """INSERT INTO dataset_preprocessed (id_scraping, ulasan_asli, ulasan_bersih, label) 
                        VALUES (%s, %s, %s, %s)""",
-                    (item['id'], ulasan_asli, ulasan_bersih, item['label'])
+                    (item['id'], ulasan_asli, ulasan_bersih, label)
                 )
                 count += 1
+                
+                # Update label di dataset_scraping juga
+                cursor.execute(
+                    "UPDATE dataset_scraping SET label = %s WHERE id = %s",
+                    (label, item['id'])
+                )
         
         conn.commit()
         conn.close()
         
-        flash(f'Preprocessing selesai! {count} data berhasil diproses.', 'success')
+        flash(
+            f'Preprocessing & Lexicon Labeling selesai! {count} data diproses. '
+            f'(Positif: {label_stats["positif"]}, Negatif: {label_stats["negatif"]}, '
+            f'Netral: {label_stats["netral"]})',
+            'success'
+        )
     except Exception as e:
         flash(f'Error preprocessing: {str(e)}', 'danger')
+        import traceback
+        traceback.print_exc()
     
     return redirect(url_for('dataset'))
 
