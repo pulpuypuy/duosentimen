@@ -24,7 +24,6 @@ from datetime import datetime, timedelta
 
 from form import LoginUserForm, RegisterUserForm, UploadDatasetForm, ManualSentimenForm
 from preprocesing_text import preprocess_text
-from lexicon_labeling import label_sentiment, label_sentiment_detail, calculate_sentiment_score
 from tf_idf import calculate_tfidf, get_tfidf_vector, calculate_tf
 from naive_bayes import train_naive_bayes, predict_single, evaluate_model
 from genplot import (
