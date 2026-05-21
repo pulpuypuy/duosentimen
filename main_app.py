@@ -497,9 +497,8 @@ def upload_dataset():
                 df = df.dropna(subset=['ulasan'])
                 df['ulasan'] = df['ulasan'].astype(str)
                 
-                # Label akan ditentukan oleh lexicon saat preprocessing
-                # Sementara set label kosong
-                df['label'] = ''
+                # Auto-label berdasarkan rating
+                df['label'] = df['rating'].apply(auto_label)
                 
                 # Hapus data lama jika user memilih replace
                 conn = get_db_connection()
@@ -585,10 +584,9 @@ def run_preprocessing():
         for item in data:
             ulasan_asli = item['ulasan']
             ulasan_bersih = preprocess_text(str(ulasan_asli))
+            label = item['label']  # Menggunakan label dari rating
             
             if ulasan_bersih.strip():
-                # Labeling menggunakan lexicon InSet
-                label = label_sentiment(ulasan_bersih)
                 label_stats[label] = label_stats.get(label, 0) + 1
                 
                 cursor.execute(
@@ -597,20 +595,14 @@ def run_preprocessing():
                     (item['id'], ulasan_asli, ulasan_bersih, label)
                 )
                 count += 1
-                
-                # Update label di dataset_scraping juga
-                cursor.execute(
-                    "UPDATE dataset_scraping SET label = %s WHERE id = %s",
-                    (label, item['id'])
-                )
         
         conn.commit()
         conn.close()
         
         flash(
-            f'Preprocessing & Lexicon Labeling selesai! {count} data diproses. '
-            f'(Positif: {label_stats["positif"]}, Negatif: {label_stats["negatif"]}, '
-            f'Netral: {label_stats["netral"]})',
+            f'Preprocessing selesai! {count} data diproses. '
+            f'(Positif: {label_stats.get("positif", 0)}, Negatif: {label_stats.get("negatif", 0)}, '
+            f'Netral: {label_stats.get("netral", 0)})',
             'success'
         )
     except Exception as e:
@@ -622,7 +614,7 @@ def run_preprocessing():
 
 
 # ====================================================
-# Route: Split Data Training/Testing (80:20)
+# Route: Split Data Training/Testing (70:30)
 # ====================================================
 @app.route('/split-data', methods=['POST'])
 def split_data():
@@ -644,8 +636,8 @@ def split_data():
         # Shuffle data
         random.shuffle(data)
         
-        # Split 80:20
-        split_idx = int(len(data) * 0.8)
+        # Split 70:30
+        split_idx = int(len(data) * 0.7)
         training_data = data[:split_idx]
         testing_data = data[split_idx:]
         
