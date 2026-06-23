@@ -1,0 +1,194 @@
+/* ============================
+   Design Tokens – DuoSentimen
+   ============================ */
+:root {
+  /* Surface colours */
+  --color-background:               #0d1226;
+  --color-surface:                  #0d1226;
+  --color-surface-dim:              #0d1226;
+  --color-surface-bright:           #34384d;
+  --color-surface-container-lowest: #080d20;
+  --color-surface-container-low:    #161a2e;
+  --color-surface-container:        #1a1f32;
+  --color-surface-container-high:   #24293d;
+  --color-surface-container-highest:#2f3449;
+  --color-surface-variant:          #2f3449;
+  --color-surface-tint:             #6be026;
+
+  /* Primary */
+  --color-primary:             #74e930;
+  --color-primary-container:   #58cc02;
+  --color-primary-fixed:       #87fe45;
+  --color-primary-fixed-dim:   #6be026;
+  --color-on-primary:          #133800;
+  --color-on-primary-container:#1e5000;
+  --color-on-primary-fixed:    #082100;
+  --color-on-primary-fixed-variant: #1f5100;
+  --color-inverse-primary:     #2b6c00;
+
+  /* Secondary */
+  --color-secondary:           #ffe9b8;
+  --color-secondary-container: #fec700;
+  --color-secondary-fixed:     #ffdf92;
+  --color-secondary-fixed-dim: #f4bf00;
+  --color-on-secondary:        #3e2e00;
+  --color-on-secondary-container: #6e5400;
+  --color-on-secondary-fixed:  #241a00;
+  --color-on-secondary-fixed-variant: #594400;
+
+  /* Tertiary */
+  --color-tertiary:            #ffc0bb;
+  --color-tertiary-container:  #ff9790;
+  --color-tertiary-fixed:      #ffdad7;
+  --color-tertiary-fixed-dim:  #ffb3ae;
+  --color-on-tertiary:         #68000b;
+  --color-on-tertiary-container:#910013;
+  --color-on-tertiary-fixed:   #410004;
+  --color-on-tertiary-fixed-variant: #930014;
+
+  /* Error */
+  --color-error:               #ffb4ab;
+  --color-error-container:     #93000a;
+  --color-on-error:            #690005;
+  --color-on-error-container:  #ffdad6;
+
+  /* On colours */
+  --color-on-surface:          #dee1fd;
+  --color-on-surface-variant:  #becbb1;
+  --color-on-background:       #dee1fd;
+  --color-inverse-on-surface:  #2b2f44;
+  --color-inverse-surface:     #dee1fd;
+
+  /* Outline */
+  --color-outline:             #88957d;
+  --color-outline-variant:     #3f4a36;
+
+  /* Spacing */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  48px;
+  --space-gutter: 20px;
+  --space-margin: 32px;
+
+  /* Border radius */
+  --radius-sm:   0.125rem;
+  --radius-lg:   0.25rem;
+  --radius-xl:   0.5rem;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-family-base: 'Inter', system-ui, sans-serif;
+
+  --fs-display-xl-size:   40px;
+  --fs-display-xl-lh:     48px;
+  --fs-display-xl-ls:     -0.02em;
+  --fs-display-xl-fw:     700;
+
+  --fs-headline-lg-size:  24px;
+  --fs-headline-lg-lh:    32px;
+  --fs-headline-lg-ls:    -0.01em;
+  --fs-headline-lg-fw:    600;
+
+  --fs-headline-md-size:  20px;
+  --fs-headline-md-lh:    28px;
+  --fs-headline-md-fw:    600;
+
+  --fs-body-lg-size:      16px;
+  --fs-body-lg-lh:        24px;
+  --fs-body-lg-fw:        400;
+
+  --fs-body-md-size:      14px;
+  --fs-body-md-lh:        20px;
+  --fs-body-md-fw:        400;
+
+  --fs-label-bold-size:   12px;
+  --fs-label-bold-lh:     16px;
+  --fs-label-bold-ls:     0.05em;
+  --fs-label-bold-fw:     600;
+
+  --fs-label-sm-size:     12px;
+  --fs-label-sm-lh:       16px;
+  --fs-label-sm-fw:       500;
+
+  --fs-numeric-size:      28px;
+  --fs-numeric-lh:        32px;
+  --fs-numeric-fw:        700;
+}
+
+/* ============================
+   Reset & Base
+   ============================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================
+   Typography utilities
+   ============================ */
+.text-display-xl {
+  font-size: var(--fs-display-xl-size);
+  line-height: var(--fs-display-xl-lh);
+  letter-spacing: var(--fs-display-xl-ls);
+  font-weight: var(--fs-display-xl-fw);
+}
+.text-headline-lg {
+  font-size: var(--fs-headline-lg-size);
+  line-height: var(--fs-headline-lg-lh);
+  letter-spacing: var(--fs-headline-lg-ls);
+  font-weight: var(--fs-headline-lg-fw);
+}
+.text-headline-md {
+  font-size: var(--fs-headline-md-size);
+  line-height: var(--fs-headline-md-lh);
+  font-weight: var(--fs-headline-md-fw);
+}
+.text-body-lg {
+  font-size: var(--fs-body-lg-size);
+  line-height: var(--fs-body-lg-lh);
+  font-weight: var(--fs-body-lg-fw);
+}
+.text-body-md {
+  font-size: var(--fs-body-md-size);
+  line-height: var(--fs-body-md-lh);
+  font-weight: var(--fs-body-md-fw);
+}
+.text-label-bold {
+  font-size: var(--fs-label-bold-size);
+  line-height: var(--fs-label-bold-lh);
+  letter-spacing: var(--fs-label-bold-ls);
+  font-weight: var(--fs-label-bold-fw);
+}
+.text-label-sm {
+  font-size: var(--fs-label-sm-size);
+  line-height: var(--fs-label-sm-lh);
+  font-weight: var(--fs-label-sm-fw);
+}
+
+/* ============================
+   Scrollbar
+   ============================ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-surface-container-low); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-outline); }

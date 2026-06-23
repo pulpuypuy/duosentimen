@@ -1,0 +1,15 @@
+{
+  "name": "duolingo-apps",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:api": "cd apps/api && venv\\Scripts\\flask run",
+    "dev": "concurrently \"npm run dev:web\" \"npm run dev:api\"",
+    "build": "cd apps/web && npm run build",
+    "preview": "cd apps/web && npm run preview"
+  }
+}

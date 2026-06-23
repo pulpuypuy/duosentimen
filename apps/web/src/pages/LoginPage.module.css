@@ -1,0 +1,278 @@
+/* ============================
+   LoginPage – scoped styles
+   ============================ */
+
+/* ── Full-screen centering root ── */
+.root {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  overflow: hidden;
+}
+
+/* ── Ambient background orbs ── */
+.orb1, .orb2 {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(100px);
+  opacity: 0.12;
+}
+.orb1 {
+  width: 520px;
+  height: 520px;
+  top: -160px;
+  left: -160px;
+  background: radial-gradient(circle, var(--color-primary-container), transparent 70%);
+  animation: floatA 12s ease-in-out infinite alternate;
+}
+.orb2 {
+  width: 400px;
+  height: 400px;
+  bottom: -120px;
+  right: -120px;
+  background: radial-gradient(circle, var(--color-secondary-container), transparent 70%);
+  animation: floatB 14s ease-in-out infinite alternate;
+}
+
+@keyframes floatA {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(40px, 40px) scale(1.08); }
+}
+@keyframes floatB {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-30px, -30px) scale(1.05); }
+}
+
+/* ── Wrapper ── */
+.wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* ── Card glow halo ── */
+.glow {
+  position: absolute;
+  inset: -4px;
+  background: var(--color-primary-container);
+  opacity: 0.12;
+  filter: blur(40px);
+  border-radius: 1.25rem;
+  z-index: -1;
+  animation: pulseGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  from { opacity: 0.10; filter: blur(32px); }
+  to   { opacity: 0.18; filter: blur(48px); }
+}
+
+/* ── Main card ── */
+.card {
+  width: 100%;
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-surface-variant);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 4px 6px -1px rgba(0,0,0,0.4),
+    0 20px 60px -10px rgba(0,0,0,0.6);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  transition: box-shadow 0.3s ease;
+}
+.card:hover {
+  box-shadow:
+    0 4px 6px -1px rgba(0,0,0,0.5),
+    0 24px 70px -8px rgba(0,0,0,0.7),
+    0 0 0 1px var(--color-outline-variant);
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+}
+
+.logoRing {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--color-surface-container-high);
+  border: 1px solid var(--color-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-md);
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,0.3),
+    0 0 20px rgba(88, 204, 2, 0.15);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.logoRing:hover {
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,0.3),
+    0 0 30px rgba(88, 204, 2, 0.28);
+  transform: scale(1.04);
+}
+
+.appTitle {
+  color: var(--color-on-surface);
+  margin-bottom: var(--space-xs);
+}
+.appSub {
+  color: var(--color-on-surface-variant);
+}
+
+/* ── Form ── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: calc(var(--space-sm) / 2);
+}
+
+/* ── Field group ── */
+.fieldGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.fieldIcon {
+  position: absolute;
+  left: var(--space-sm);
+  font-size: 20px;
+  color: var(--color-on-surface-variant);
+  pointer-events: none;
+  transition: color 0.2s ease;
+  user-select: none;
+}
+.fieldGroup:focus-within .fieldIcon {
+  color: var(--color-primary-container);
+}
+
+.input {
+  width: 100%;
+  background: var(--color-background);
+  border: 1px solid var(--color-surface-variant);
+  border-radius: var(--radius-xl);
+  padding: var(--space-sm) var(--space-sm) var(--space-sm) 40px;
+  color: var(--color-on-surface);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  /* remove browser default */
+  appearance: none;
+  -webkit-appearance: none;
+}
+.input::placeholder {
+  color: color-mix(in srgb, var(--color-on-surface-variant) 50%, transparent);
+}
+.input:focus {
+  border-color: var(--color-secondary-container);
+  box-shadow: 0 0 0 1px var(--color-secondary-container);
+}
+.input[type='password']:not(:placeholder-shown) {
+  /* extra right padding when eye btn visible */
+  padding-right: 40px;
+}
+
+/* Eye toggle button */
+.eyeBtn {
+  position: absolute;
+  right: var(--space-sm);
+  background: none;
+  border: none;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+.eyeBtn:hover { color: var(--color-on-surface); }
+
+/* ── Submit button ── */
+.submitBtn {
+  margin-top: calc(var(--space-sm) / 2);
+  width: 100%;
+  background: #58cc02;
+  color: var(--color-on-primary);
+  border: 1px solid var(--color-primary-fixed);
+  border-radius: var(--radius-xl);
+  padding: 14px var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(88, 204, 2, 0.25);
+}
+.submitBtn:hover:not(:disabled) {
+  background: var(--color-surface-tint);
+  box-shadow: 0 6px 22px rgba(88, 204, 2, 0.4);
+}
+.submitBtn:active:not(:disabled) {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(88, 204, 2, 0.2);
+}
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Spinner */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(19, 56, 0, 0.3);
+  border-top-color: var(--color-on-primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Card footer ── */
+.cardFooter {
+  text-align: center;
+  margin-top: calc(var(--space-xs) * -1);
+}
+.forgotLink {
+  color: var(--color-on-surface-variant);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.forgotLink:hover { color: var(--color-primary-container); }
+
+/* ── Version badge ── */
+.version {
+  font-size: 11px;
+  color: color-mix(in srgb, var(--color-on-surface-variant) 40%, transparent);
+  letter-spacing: 0.04em;
+}
+
+/* ── Responsive ── */
+@media (min-width: 480px) {
+  .card {
+    padding: var(--space-margin);
+  }
+}

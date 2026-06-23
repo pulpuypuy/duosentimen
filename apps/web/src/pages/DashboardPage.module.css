@@ -1,0 +1,291 @@
+/* ── Layout ── */
+.layout {
+  display: flex;
+  min-height: 100dvh;
+  background: var(--color-background);
+}
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  background: var(--color-surface-container-low);
+  border-bottom: 1px solid var(--color-surface-variant);
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.pageTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-on-surface);
+  letter-spacing: -0.01em;
+}
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.filterBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-surface-variant);
+  border-radius: 8px;
+  color: var(--color-on-surface);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.filterBtn:hover { background: var(--color-surface-container-high); }
+.exportBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-surface-variant);
+  border-radius: 8px;
+  color: var(--color-on-surface);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.exportBtn:hover { background: var(--color-surface-container-high); }
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-surface-variant);
+  border-radius: 50%;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.iconBtn:hover { background: var(--color-surface-container-high); color: var(--color-on-surface); }
+
+/* ── Scrollable content ── */
+.content {
+  flex: 1;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+/* ── Stat cards grid ── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1100px) {
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.statCard {
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-surface-variant);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.statCard:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  transform: translateY(-2px);
+}
+.statTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.statLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+}
+.statValue {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.progressTrack {
+  height: 4px;
+  background: var(--color-surface-variant);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progressBar {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}
+.statFooter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+.statBadge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary-container) 18%, transparent);
+  padding: 2px 7px;
+  border-radius: 99px;
+}
+.statBadgeText {
+  font-size: 11px;
+  color: var(--color-on-surface-variant);
+}
+
+/* ── Card shared ── */
+.card {
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-surface-variant);
+  border-radius: 12px;
+  padding: 20px;
+}
+.cardTitle {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* ── Charts row ── */
+.chartsRow {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.chartsRow > .card:first-child {
+  width: 300px;
+  min-width: 260px;
+}
+@media (max-width: 900px) {
+  .chartsRow { flex-direction: column; }
+  .chartsRow > .card:first-child { width: 100%; }
+}
+.donutWrap { display: flex; justify-content: center; }
+.legendRow {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 8px;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--color-on-surface-variant);
+}
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Reviews table ── */
+.tableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.lihatSemua {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary-container);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.lihatSemua:hover { opacity: 0.75; }
+.tableWrap { overflow-x: auto; }
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.table thead tr {
+  border-bottom: 1px solid var(--color-surface-variant);
+}
+.table th {
+  text-align: left;
+  padding: 0 16px 10px 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.table tbody tr {
+  border-bottom: 1px solid var(--color-surface-variant);
+  transition: background 0.12s;
+}
+.table tbody tr:last-child { border-bottom: none; }
+.table tbody tr:hover { background: var(--color-surface-container-high); }
+.table td {
+  padding: 13px 16px 13px 0;
+  color: var(--color-on-surface);
+  vertical-align: middle;
+}
+.reviewText {
+  max-width: 420px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-on-surface-variant) !important;
+}
+.dateCell {
+  white-space: nowrap;
+  color: var(--color-on-surface-variant) !important;
+  text-align: right;
+}
+
+/* ── Stars ── */
+.stars { display: inline-flex; gap: 1px; }
+.starFilled { color: #f5a623; font-size: 15px; }
+.starEmpty  { color: var(--color-surface-variant); font-size: 15px; }
+
+/* ── Sentiment badges ── */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.badgePositif { background: color-mix(in srgb, #58cc02 22%, transparent); color: #58cc02; border: 1px solid color-mix(in srgb, #58cc02 40%, transparent); }
+.badgeNegatif { background: color-mix(in srgb, #ff6b6b 22%, transparent); color: #ff6b6b; border: 1px solid color-mix(in srgb, #ff6b6b 40%, transparent); }
+.badgeNetral  { background: color-mix(in srgb, #9ca3af 22%, transparent); color: #9ca3af; border: 1px solid color-mix(in srgb, #9ca3af 40%, transparent); }
