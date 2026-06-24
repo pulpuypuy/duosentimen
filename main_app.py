@@ -613,7 +613,7 @@ def run_preprocessing():
 
 
 # ====================================================
-# Route: Split Data Training/Testing (70:30)
+# Route: Split Data Training/Testing (80:20)
 # ====================================================
 @app.route('/split-data', methods=['POST'])
 def split_data():
@@ -635,8 +635,8 @@ def split_data():
         # Shuffle data
         random.shuffle(data)
         
-        # Split 70:30
-        split_idx = int(len(data) * 0.7)
+        # Split 80:20
+        split_idx = int(len(data) * 0.8)
         training_data = data[:split_idx]
         testing_data = data[split_idx:]
         
