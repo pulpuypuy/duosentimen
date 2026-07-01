@@ -875,13 +875,6 @@ def about():
 # Main Entry Point
 # ====================================================
 if __name__ == '__main__':
-    # Setup NLTK data
-    try:
-        from nltk_config import setup_nltk
-        setup_nltk()
-    except Exception as e:
-        print(f"[WARNING] NLTK setup failed: {e}")
-    
     # Pastikan admin user ada
     ensure_admin_exists()
     
