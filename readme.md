@@ -27,7 +27,7 @@ DuoSentimen adalah aplikasi web berbasis Flask untuk menganalisis sentimen ulasa
 |----------|-----------|
 | Backend | Python 3, Flask |
 | Database | MySQL |
-| NLP | NLTK, Sastrawi |
+| NLP | Sastrawi |
 | ML | Naive Bayes (custom), TF-IDF |
 | Scraping | google-play-scraper |
 | Visualisasi | Plotly, Matplotlib, WordCloud |
